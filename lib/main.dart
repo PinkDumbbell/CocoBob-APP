@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(child: WebView(
-          initialUrl: 'http://192.168.0.6:3000/',
+          initialUrl: 'https//petalog.us',
           javascriptMode: JavascriptMode.unrestricted,
         )
       )
