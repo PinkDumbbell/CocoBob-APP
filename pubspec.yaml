@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_inappwebview: 5.4.3
   url_launcher:
-  geolocator: 6.2.0
+  geolocator: 9.0.1
 
 dev_dependencies:
   flutter_test:

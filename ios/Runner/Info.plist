@@ -6,13 +6,15 @@
     <string>Flutter requires acess to camera.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
+		<key>NSAllowsArbitraryLoads</key> <true/>
+		<key>NSALLowsArbitraryLoadsInWebContent</key> <true/>
 	</dict>
+	<key>io.flutter.embedded_views_preview</key> <true/>
+	<key>YES</key>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Cocobob App Flutter</string>
+	<string>펫탈로그</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,7 +22,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>cocobob_app_flutter</string>
+	<string>Petalog</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -54,5 +56,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Used to Location&apos;s Info always for Using Beacon.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Used to Location&apos;s Info always for Using Beacon.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Used to Location&apos;s Info for Using Beacon when In Use.</string>
 </dict>
 </plist>

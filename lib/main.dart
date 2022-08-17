@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import "geolocator.dart";
 
 void main() => runApp(MyApp()); // initiate MyApp as  StatelessWidget
 
@@ -44,6 +45,14 @@ class _MyWebViewState extends State<MyWebView> {
     )
   );
 
+  // getLocationPermission async (){
+  //   var currentLocation =  await GeolocatorHandler.determinePosition();
+  //   print(currentLocation);
+  //   webViewController.evaluateJavascript(source: """
+  //     const locatorHandlerEvent = new CustomEvent("locatorListener", window.dispatchEvent(locatorHandlerEvent, ${currentLocation});
+  //   """);
+  //   return Future(true);
+  // }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -60,23 +69,33 @@ class _MyWebViewState extends State<MyWebView> {
                   retain:true
               );
             },
-
             onWebViewCreated: (controller) {
               webViewController=controller;
-              controller.addJavaScriptHandler(handlerName: 'platformHandler', callback: (args){
-                if(foundation.defaultTargetPlatform == foundation.TargetPlatform.android) {
-                  return { 'platform': 'android'};
-                }
-                else if(foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS) {
-                  return {'platform':'ios'};
-                }
-                else {
-                  return {
-                    'platform': 'os'
-                  };
-                 }
-               });
+                controller.addJavaScriptHandler(handlerName: 'platformHandler', callback: (args){
+                  if(foundation.defaultTargetPlatform == foundation.TargetPlatform.android) {
+                    return { 'platform': 'android'};
+                  }
+                  else if(foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS) {
+                    return {'platform':'ios'};
+                  }
+                  else {
+                    return {
+                      'platform': 'os'
+                    };
+                   }
+                 });
+                controller.addJavaScriptHandler(handlerName: 'locationPermissionHandler', callback: (args){
+                   // getLocationPermission();
+                  var positionJson = GeolocatorHandler.determinePosition();
+                  webViewController.evaluateJavascript(source: """
+                    const locatorHandlerEvent = new CustomEvent("locatorListener",{positionJson:${positionJson}});
+                    window.dispatchEvent(locatorHandlerEvent);
+                  """);
+                });
               },
+            onConsoleMessage: (controller, consoleMessage){
+              print('console message: ${consoleMessage.message}');
+            },
             ),
           ),
           onWillPop: (){

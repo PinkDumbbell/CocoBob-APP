@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pinkdumbbell.cocobob.cocobob_app_flutter">
    <application
-        android:label="cocobob_app_flutter"
+        android:label="펫탈로그"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
