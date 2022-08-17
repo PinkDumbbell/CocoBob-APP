@@ -4,6 +4,11 @@
 <dict>
     <key>NSCameraUsageDescription</key>
     <string>Flutter requires acess to camera.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -47,7 +52,10 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+<<<<<<< HEAD
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+=======
+>>>>>>> b13812f19f8ca437d8de4a5668fdada2ff3c858b
 </dict>
 </plist>
