@@ -62,5 +62,7 @@
     <string>Used to Location&apos;s Info always for Using Beacon.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Used to Location&apos;s Info for Using Beacon when In Use.</string>
+    <key>UIBackgroundModes</key>
+    <string>location</string>
 </dict>
 </plist>
