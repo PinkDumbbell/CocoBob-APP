@@ -65,6 +65,7 @@ class _MyWebViewState extends State<MyWebView> {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
         return {
+          'success' : false,
           'error': '위치권한 요청에 실패하였습니다.'
         };
       }
@@ -75,6 +76,7 @@ class _MyWebViewState extends State<MyWebView> {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
         return {
+          'success': false,
           'error':'위치권한 사용이 거부되었습니다'
         };
       }
@@ -82,8 +84,18 @@ class _MyWebViewState extends State<MyWebView> {
 
     _locationData = await location.getLocation();
     return {
-      'location': jsonEncode(_locationData)
+      'success':true,
+      'error':'',
+      'location': {
+        'latitude':_locationData.latitude,
+        'longitude': _locationData.longitude
+      }
     };
+  }
+
+
+  locationIntervalHandler(args) async {
+    print('location interval handler');
   }
 
   @override
@@ -106,6 +118,7 @@ class _MyWebViewState extends State<MyWebView> {
               webViewController=controller;
               controller.addJavaScriptHandler(handlerName: 'platformHandler', callback: platformHandler);
               controller.addJavaScriptHandler(handlerName: 'locationPermissionHandler', callback: locationPermissionHandler);
+              controller.addJavaScriptHandler(handlerName: 'locationIntervalHandler', callback: locationIntervalHandler);
             },
             onConsoleMessage: (controller, consoleMessage){
               print('console message: ${consoleMessage.message}');
