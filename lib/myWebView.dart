@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:location/location.dart';
+import 'package:flutter/services.dart';
 
 class MyWebView extends StatefulWidget {
   @override
@@ -100,10 +101,19 @@ class _MyWebViewState extends State<MyWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: WillPopScope(
-        child: Scaffold(
-          body: InAppWebView(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(0),
+          child: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+        ),
+      body: WillPopScope(
+        child: SafeArea(
+          child: InAppWebView(
             key:webViewKey,
             initialUrlRequest: URLRequest(url: Uri.parse("https://petalog.us")),
             initialOptions: options,
