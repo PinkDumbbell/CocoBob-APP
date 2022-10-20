@@ -12,8 +12,7 @@
 			<true/>
 		</dict>
 		<key>io.flutter.embedded_views_preview</key>
-		<true/>
-		<key>YES</key>
+		<string>YES</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
