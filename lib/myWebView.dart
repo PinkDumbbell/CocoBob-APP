@@ -53,8 +53,7 @@ class _MyWebViewState extends State<MyWebView> {
     }
   }
 
-  locationPermissionHandler(args) async {
-    // getLocationPermission();
+  locationPermissionHandler(context) async {
     Location location = new Location();
 
     bool _serviceEnabled;
@@ -67,14 +66,14 @@ class _MyWebViewState extends State<MyWebView> {
       if (!_serviceEnabled) {
         return {
           'success' : false,
-          'error': '위치권한 요청에 실패하였습니다.'
+          'error': 'GPS가 켜져있어야 합니다.'
         };
       }
     }
 
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
+      _permissionGranted =  await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
         return {
           'success': false,
@@ -99,8 +98,20 @@ class _MyWebViewState extends State<MyWebView> {
     print('location interval handler');
   }
 
+  checkLocationPermission(args) async {
+    Location location = new Location();
+    PermissionStatus _permissionGranted = await location.hasPermission();
+
+    if(_permissionGranted == PermissionStatus.granted){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -127,6 +138,8 @@ class _MyWebViewState extends State<MyWebView> {
             onWebViewCreated: (controller) {
               webViewController=controller;
               controller.addJavaScriptHandler(handlerName: 'platformHandler', callback: platformHandler);
+              controller.addJavaScriptHandler(handlerName: 'checkLocationPermission', callback: checkLocationPermission);
+              controller.addJavaScriptHandler(handlerName: 'getLocationPermission', callback: locationPermissionHandler);
               controller.addJavaScriptHandler(handlerName: 'locationPermissionHandler', callback: locationPermissionHandler);
               controller.addJavaScriptHandler(handlerName: 'locationIntervalHandler', callback: locationIntervalHandler);
             },
