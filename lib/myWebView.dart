@@ -1,5 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/foundation.dart' as foundation;
@@ -21,7 +23,6 @@ class _MyWebViewState extends State<MyWebView> {
           supportZoom: false,
           useShouldOverrideUrlLoading:true,
           mediaPlaybackRequiresUserGesture: false,
-          userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/103.0.5060.63 Mobile/15E148 Safari/604.1'
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
@@ -42,10 +43,10 @@ class _MyWebViewState extends State<MyWebView> {
   }
 
   platformHandler(args){
-    if(foundation.defaultTargetPlatform == foundation.TargetPlatform.android) {
-      return { 'platform': 'android'};
+    if(Platform.isAndroid) {
+      return { 'platform': 'android' };
     }
-    else if(foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS) {
+    else if(Platform.isIOS) {
       return { 'platform':'ios' };
     }
     else {
@@ -126,7 +127,7 @@ class _MyWebViewState extends State<MyWebView> {
         child: SafeArea(
           child: InAppWebView(
             key:webViewKey,
-            initialUrlRequest: URLRequest(url: Uri.parse("https://petalog.us")),
+            initialUrlRequest: URLRequest(url: Uri.parse("http://10.0.2.2:3000")),
             initialOptions: options,
             androidOnGeolocationPermissionsShowPrompt: (InAppWebViewController controller, String origin) async{
               return GeolocationPermissionShowPromptResponse(

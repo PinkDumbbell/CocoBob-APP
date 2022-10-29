@@ -38,6 +38,7 @@ dependencies:
   url_launcher:
   location: ^4.2.0
   flutter_native_splash: ^2.2.4
+  device_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
