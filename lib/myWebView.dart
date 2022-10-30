@@ -23,6 +23,7 @@ class _MyWebViewState extends State<MyWebView> {
           supportZoom: false,
           useShouldOverrideUrlLoading:true,
           mediaPlaybackRequiresUserGesture: false,
+          userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/103.0.5060.63 Mobile/15E148 Safari/604.1'
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
