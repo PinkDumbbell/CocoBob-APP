@@ -15,7 +15,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]); 
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return FutureBuilder(
         future:Future.delayed((Duration(seconds: 3))),
         builder: (context, AsyncSnapshot snapshot){

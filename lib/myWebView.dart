@@ -16,7 +16,6 @@ class MyWebView extends StatefulWidget {
 class _MyWebViewState extends State<MyWebView> {
   final GlobalKey webViewKey = GlobalKey();
   late InAppWebViewController webViewController;
-  late String url;
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
@@ -137,7 +136,7 @@ class _MyWebViewState extends State<MyWebView> {
                   retain:true
               );
             },
-            onWebViewCreated: (controller) {
+            onWebViewCreated: (controller) async {
               webViewController=controller;
               controller.addJavaScriptHandler(handlerName: 'platformHandler', callback: platformHandler);
               controller.addJavaScriptHandler(handlerName: 'checkLocationPermission', callback: checkLocationPermission);
