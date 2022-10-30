@@ -8,6 +8,23 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
 
+Widget swipeOffKeyboard(BuildContext context, {Widget? child}) {
+  return Listener(
+    onPointerMove: (PointerMoveEvent pointer) {
+      swipeDownKeyBoard(pointer, context);
+    },
+    child: child, // your content should go here
+  );
+}
+
+void swipeDownKeyBoard(PointerMoveEvent pointer, BuildContext context) {
+  double insets = MediaQuery.of(context).viewInsets.bottom;
+  double screenHeight = MediaQuery.of(context).size.height;
+  double position = pointer.position.dy;
+  double keyboardHeight = screenHeight - insets;
+  if (position > keyboardHeight && insets > 0) FocusManager.instance.primaryFocus?.unfocus();
+}
+
 class MyWebView extends StatefulWidget {
   @override
   _MyWebViewState createState() => _MyWebViewState();
@@ -22,13 +39,13 @@ class _MyWebViewState extends State<MyWebView> {
           supportZoom: false,
           useShouldOverrideUrlLoading:true,
           mediaPlaybackRequiresUserGesture: false,
-          userAgent: 'random'
+          userAgent: 'random',
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
       ),
       ios: IOSInAppWebViewOptions(
-          allowsInlineMediaPlayback: true
+          allowsInlineMediaPlayback: true,
       )
   );
 
@@ -113,44 +130,46 @@ class _MyWebViewState extends State<MyWebView> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(0),
-          child: AppBar(
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
-            backgroundColor: Colors.white,
-            elevation: 0,
-          ),
-        ),
-      body: WillPopScope(
-        child: SafeArea(
+    return WillPopScope(
+        child: swipeOffKeyboard(
+          context,
           child: InAppWebView(
-            key:webViewKey,
-            initialUrlRequest: URLRequest(url: Uri.parse("https://petalog.us")),
-            initialOptions: options,
-            androidOnGeolocationPermissionsShowPrompt: (InAppWebViewController controller, String origin) async{
-              return GeolocationPermissionShowPromptResponse(
-                  origin:origin,
-                  allow:true,
-                  retain:true
-              );
-            },
-            onWebViewCreated: (controller) async {
-              webViewController=controller;
-              controller.addJavaScriptHandler(handlerName: 'platformHandler', callback: platformHandler);
-              controller.addJavaScriptHandler(handlerName: 'checkLocationPermission', callback: checkLocationPermission);
-              controller.addJavaScriptHandler(handlerName: 'getLocationPermission', callback: locationPermissionHandler);
-              controller.addJavaScriptHandler(handlerName: 'locationPermissionHandler', callback: locationPermissionHandler);
-              controller.addJavaScriptHandler(handlerName: 'locationIntervalHandler', callback: locationIntervalHandler);
-            },
-            onConsoleMessage: (controller, consoleMessage){
-              print('console message: ${consoleMessage.message}');
-            },
-          ),
+              key:webViewKey,
+              initialUrlRequest: URLRequest(url: Uri.parse("http://localhost:3000")),
+              initialOptions: options,
+              androidOnGeolocationPermissionsShowPrompt: (InAppWebViewController controller, String origin) async{
+                return GeolocationPermissionShowPromptResponse(
+                    origin:origin,
+                    allow:true,
+                    retain:true
+                );
+              },
+              pullToRefreshController: PullToRefreshController(
+                options: PullToRefreshOptions(
+                  color:Colors.blue,
+                ),
+                onRefresh: () async{
+                  if(Platform.isAndroid){
+                    webViewController?.reload();
+                  }else if(Platform.isIOS){
+                    webViewController?.loadUrl(urlRequest: URLRequest(url: await webViewController?.getUrl()));
+                  }
+                }
+              ),
+              onWebViewCreated: (controller) async {
+                webViewController=controller;
+                controller.addJavaScriptHandler(handlerName: 'platformHandler', callback: platformHandler);
+                controller.addJavaScriptHandler(handlerName: 'checkLocationPermission', callback: checkLocationPermission);
+                controller.addJavaScriptHandler(handlerName: 'getLocationPermission', callback: locationPermissionHandler);
+                controller.addJavaScriptHandler(handlerName: 'locationPermissionHandler', callback: locationPermissionHandler);
+                controller.addJavaScriptHandler(handlerName: 'locationIntervalHandler', callback: locationIntervalHandler);
+              },
+              onConsoleMessage: (controller, consoleMessage){
+                print('console message: ${consoleMessage.message}');
+              },
+            ),
         ),
         onWillPop: ()=>_goBack(context),
-      ),
-    );
+      );
   }
 }
