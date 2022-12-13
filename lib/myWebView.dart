@@ -135,7 +135,7 @@ class _MyWebViewState extends State<MyWebView> {
           context,
           child: InAppWebView(
               key:webViewKey,
-              initialUrlRequest: URLRequest(url: Uri.parse("https://petalog.us")),
+              initialUrlRequest: URLRequest(url: Uri.parse("https://petalog.kr")),
               initialOptions: options,
               androidOnGeolocationPermissionsShowPrompt: (InAppWebViewController controller, String origin) async{
                 return GeolocationPermissionShowPromptResponse(
